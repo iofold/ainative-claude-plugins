@@ -1,8 +1,16 @@
 {
   "name": "google-workspace",
-  "version": "1.0.0",
-  "description": "Google Workspace integration - Gmail, Drive, Calendar, Docs, Sheets, and Tasks via gws CLI",
+  "version": "1.1.0",
+  "description": "Google Workspace integration - Gmail, Drive, Calendar, Docs, Sheets, and Tasks via gws CLI with bundled DuckDB index scripts",
   "author": { "name": "ainative" },
   "license": "MIT",
-  "keywords": ["google", "gmail", "drive", "calendar", "docs", "sheets", "workspace"]
+  "keywords": ["google", "gmail", "drive", "calendar", "docs", "sheets", "workspace"],
+  "scripts": {
+    "sync-drive": "scripts/sync-drive.sh",
+    "query-drive": "scripts/query-drive.sh",
+    "sync-emails": "scripts/sync-emails.sh",
+    "categorize-emails": "scripts/categorize-emails.sh",
+    "query": "scripts/query.sh",
+    "sync-to-sheets": "scripts/sync-to-sheets.sh"
+  }
 }

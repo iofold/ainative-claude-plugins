@@ -1,6 +1,7 @@
 ---
 name: google-workspace
 description: "Interact with Google Workspace (Gmail, Drive, Calendar, Docs, Sheets, Tasks) via the gws CLI. Use when the user asks to read emails, check calendar, manage drive files, send emails, create events, read spreadsheets, or any Google Workspace operation."
+disable-model-invocation: true
 ---
 
 # Google Workspace CLI (gws)
@@ -8,29 +9,74 @@ description: "Interact with Google Workspace (Gmail, Drive, Calendar, Docs, Shee
 Binary: `gws` (must be on PATH)
 Auth: OAuth2 with your authenticated Google account (encrypted credentials in ~/.config/gws/)
 
+## Installation
+
+### gws CLI
+```bash
+pnpm add -g gws
+```
+
+Or with npm:
+```bash
+npm install -g gws
+```
+
+### Dependencies
+- **DuckDB** - Required for Drive and Email indexing
+  ```bash
+  # macOS
+  brew install duckdb
+  # Linux
+  curl -LO https://github.com/duckdb/duckdb/releases/latest/download/duckdb_cli-linux-amd64.zip
+  unzip duckdb_cli-linux-amd64.zip && sudo mv duckdb /usr/local/bin/
+  ```
+- **Python 3** - Required for index sync scripts
+
 ## Drive Index (DuckDB)
 
 A local DuckDB index of all Google Drive files lives at a configurable path. This avoids API round trips for search/browse operations.
 
-**Default location:** `~/.local/share/gws/inbox.duckdb`
+**Default location:** `${GWS_INDEX_DB:-~/.local/share/gws/inbox.duckdb}`
 **Override:** Set `GWS_INDEX_DB` env var to point to a different DuckDB file.
 
 Scripts that sync and query the index:
 
 ```bash
 # Sync Drive files into the DuckDB index
-gws drive +sync-index
+${CLAUDE_PLUGIN_ROOT}/scripts/sync-drive.sh
 
 # Query the index (search, videos, folders, recent, stats, tree, sql)
-gws drive +query search "term"
-gws drive +query videos
-gws drive +query recent
-gws drive +query stats
-gws drive +query tree "folder name"
-gws drive +query sql "SELECT ..."
+${CLAUDE_PLUGIN_ROOT}/scripts/query-drive.sh search "term"
+${CLAUDE_PLUGIN_ROOT}/scripts/query-drive.sh videos
+${CLAUDE_PLUGIN_ROOT}/scripts/query-drive.sh recent
+${CLAUDE_PLUGIN_ROOT}/scripts/query-drive.sh stats
+${CLAUDE_PLUGIN_ROOT}/scripts/query-drive.sh tree "folder name"
+${CLAUDE_PLUGIN_ROOT}/scripts/query-drive.sh sql "SELECT ..."
 ```
 
 **From other projects:** The index scripts read `GWS_INDEX_DB` if set, falling back to the default path. The index is shared — sync once, query from anywhere.
+
+## Email Index (DuckDB)
+
+Emails can also be synced into the same DuckDB index for local search and categorization.
+
+```bash
+# Sync inbox emails into DuckDB
+${CLAUDE_PLUGIN_ROOT}/scripts/sync-emails.sh
+
+# Auto-categorize emails (newsletter, notification, meeting, business, application)
+${CLAUDE_PLUGIN_ROOT}/scripts/categorize-emails.sh
+
+# Query emails (applications, unseen, stats, search, sql)
+${CLAUDE_PLUGIN_ROOT}/scripts/query.sh applications
+${CLAUDE_PLUGIN_ROOT}/scripts/query.sh unseen
+${CLAUDE_PLUGIN_ROOT}/scripts/query.sh stats
+${CLAUDE_PLUGIN_ROOT}/scripts/query.sh search "term"
+${CLAUDE_PLUGIN_ROOT}/scripts/query.sh sql "SELECT ..."
+
+# Sync application emails to a Google Sheet
+${CLAUDE_PLUGIN_ROOT}/scripts/sync-to-sheets.sh <spreadsheet-id>
+```
 
 ## Quick Reference
 
