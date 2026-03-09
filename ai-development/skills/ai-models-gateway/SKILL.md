@@ -29,6 +29,8 @@ For detailed information, consult:
 | **Code/agentic** | `gpt-5`, `claude-sonnet-4-6` | $1.25-3.00 | 200K-400K |
 | **Maximum intelligence** | `gpt-5.4-pro`, `claude-opus-4-6` | $5.00-30.00 | 200K-1M |
 | **Long context (1M+)** | `gemini-2.5-flash`, `gpt-5.4` | $0.30-2.50 | 1M+ |
+| **Image generation** | `gemini-3.1-flash-image-preview` (Nano Banana 2) | $0.50 | 1M |
+| **Image gen (max quality)** | `gemini-3-pro-image-preview` (Nano Banana Pro) | $2.00 | 1M |
 
 ## Model Selection Decision Tree
 

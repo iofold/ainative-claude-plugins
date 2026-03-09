@@ -5,7 +5,7 @@ description: Use when generating content with Google Gemini at scale - provides 
 
 # Gemini CLI
 
-A flexible standalone CLI tool for Google Vertex AI Gemini models. Supports single prompts, file attachments (images, PDFs, text), batch processing with parallel execution, and **image generation with Imagen**.
+A flexible standalone CLI tool for Google Vertex AI Gemini models. Supports single prompts, file attachments (images, PDFs, text), batch processing with parallel execution, and **image generation with Nano Banana 2** (Gemini's image generation family).
 
 **Script location:** `skills/gemini-batch/gemini-batch.ts`
 
@@ -113,9 +113,9 @@ tasks/
     image.png
 ```
 
-### 4. Image Generation Mode (Imagen)
+### 4. Image Generation Mode (Nano Banana)
 
-Generate images from text prompts using Google's Imagen model:
+Generate images from text prompts using Google's Nano Banana image models:
 
 ```bash
 # Basic image generation
@@ -142,7 +142,7 @@ skills/gemini-batch/gemini-batch.ts \
 | Option | Description | Default |
 |--------|-------------|---------|
 | `--image <prompt>` | Generate images from text prompt | - |
-| `--imagen-model <name>` | Model name | `gemini-3-pro-image-preview` |
+| `--imagen-model <name>` | Image model name | `gemini-3.1-flash-image-preview` (Nano Banana 2) |
 | `--count <n>` | Number of images (1-4) | `1` |
 | `--aspect <ratio>` | Aspect ratio: `1:1`, `3:4`, `4:3`, `9:16`, `16:9` | `1:1` |
 
@@ -155,9 +155,9 @@ skills/gemini-batch/gemini-batch.ts \
 | `--stdin` | Read prompt from stdin | - |
 | `--batch <dir>` | Input directory for batch processing | - |
 | `--out <dir>` | Output directory for results | - |
-| `--model <name>` | Gemini model name | `gemini-2.5-pro` |
+| `--model <name>` | Gemini model name | `gemini-3.1-pro-preview` |
 | `--temperature <n>` | Temperature (0-2) | `0.7` |
-| `--max-tokens <n>` | Max output tokens | `8192` |
+| `--max-tokens <n>` | Max output tokens | `65536` |
 | `--workers <n>` | Parallel workers for batch | `5` |
 | `--no-cache` | Don't skip existing outputs | - |
 | `--quiet` | Suppress progress output | - |
@@ -224,14 +224,28 @@ skills/gemini-batch/gemini-batch.ts \
 
 ## Model Selection Guide
 
+### Text Models
+
 | Model | Use Case | Speed | Cost |
 |-------|----------|-------|------|
-| `gemini-2.5-pro` | Complex reasoning, image analysis, high quality | Slower | Higher |
-| `gemini-2.5-flash` | Simple generation, high volume | Fast | Lower |
+| `gemini-3.1-pro-preview` | Best quality, thinking/reasoning (default) | Slower | Higher |
+| `gemini-3-flash-preview` | Fast and cheap | Fast | Lower |
+| `gemini-2.5-pro` | Legacy, quality | Slower | Higher |
+| `gemini-2.5-flash` | Legacy, fast | Fast | Lower |
+
+### Image Models (Nano Banana family)
+
+| Model | Codename | Released | Based On |
+|-------|----------|----------|----------|
+| `gemini-3.1-flash-image-preview` | **Nano Banana 2** (default) | Feb 2026 | Gemini 3.1 Flash |
+| `gemini-3-pro-image-preview` | Nano Banana Pro | Nov 2025 | Gemini 3 Pro |
+| `gemini-2.5-flash-image` | Nano Banana (original) | Aug 2025 | Gemini 2.5 Flash |
 
 **Rule of thumb:**
 - Use `flash` for: summaries, simple extraction, high volume
 - Use `pro` for: image analysis, complex reasoning, quality-critical
+- Use Nano Banana 2 for: fast + high quality image generation (best default)
+- Use Nano Banana Pro for: maximum image fidelity at higher cost
 
 ## Tips
 

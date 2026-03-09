@@ -289,6 +289,46 @@ export const GOOGLE_MODELS = {
     useCase: ["budget", "batch", "high-frequency"],
     notes: "Cheapest Gemini. Stable. Free tier for <=200K tokens.",
   },
+
+
+  // --- Gemini Image Models (Nano Banana family) ---
+  // These are image generation models, not text models. Use with Gemini image generation API.
+  // Nano Banana       (Aug 2025): gemini-2.5-flash-image        (based on Gemini 2.5 Flash)
+  // Nano Banana Pro   (Nov 2025): gemini-3-pro-image-preview    (based on Gemini 3 Pro)
+  // Nano Banana 2     (Feb 2026): gemini-3.1-flash-image-preview (based on Gemini 3.1 Flash)
+  GEMINI_3_1_FLASH_IMAGE_PREVIEW: {
+    id: "gemini-3.1-flash-image-preview",
+    gatewayProvider: "google-ai-studio",
+    gatewayModel: "google-ai-studio/gemini-3.1-flash-image-preview",
+    inputPricePerMTok: 0.50,
+    outputPricePerMTok: 3.00,
+    contextWindow: 1_048_576,
+    maxOutput: 32_768,
+    useCase: ["image-generation", "image-editing", "fast-images"],
+    notes: "Nano Banana 2 (Feb 2026). Fast + high quality image gen. Based on Gemini 3.1 Flash. Best default for image generation.",
+  },
+  GEMINI_3_PRO_IMAGE_PREVIEW: {
+    id: "gemini-3-pro-image-preview",
+    gatewayProvider: "google-ai-studio",
+    gatewayModel: "google-ai-studio/gemini-3-pro-image-preview",
+    inputPricePerMTok: 2.00,
+    outputPricePerMTok: 12.00,
+    contextWindow: 1_048_576,
+    maxOutput: 32_768,
+    useCase: ["image-generation", "image-editing", "high-fidelity"],
+    notes: "Nano Banana Pro (Nov 2025). Maximum image fidelity at higher cost. Based on Gemini 3 Pro.",
+  },
+  GEMINI_2_5_FLASH_IMAGE: {
+    id: "gemini-2.5-flash-image",
+    gatewayProvider: "google-ai-studio",
+    gatewayModel: "google-ai-studio/gemini-2.5-flash-image",
+    inputPricePerMTok: 0.30,
+    outputPricePerMTok: 2.50,
+    contextWindow: 1_048_576,
+    maxOutput: 32_768,
+    useCase: ["image-generation", "budget-images"],
+    notes: "Nano Banana original (Aug 2025). Legacy. Based on Gemini 2.5 Flash.",
+  },
 } as const satisfies Record<string, ModelConfig>;
 
 // =============================================================================
@@ -436,6 +476,11 @@ export function calculateCost(
  *   google-ai-studio/gemini-2.5-pro                (stable, $1.25/$10)
  *   google-ai-studio/gemini-2.5-flash              (stable, $0.30/$2.50)
  *   google-ai-studio/gemini-2.5-flash-lite         (cheapest, $0.10/$0.40)
+ *
+ * Google Image Models (Nano Banana family - use with image generation API):
+ *   google-ai-studio/gemini-3.1-flash-image-preview  (Nano Banana 2, Feb 2026, best default)
+ *   google-ai-studio/gemini-3-pro-image-preview      (Nano Banana Pro, Nov 2025, max fidelity)
+ *   google-ai-studio/gemini-2.5-flash-image          (Nano Banana original, Aug 2025, legacy)
  *
  * xAI:
  *   xai/grok-4.1-fast

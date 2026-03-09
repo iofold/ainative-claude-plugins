@@ -153,7 +153,12 @@ function initGemini(): GoogleGenAI {
 }
 
 // ============================================================================
-// Gemini Image Generation (gemini-3-pro-image-preview)
+// Gemini Image Generation
+//
+// Model Family: "Nano Banana" (Google's image generation brand)
+//   - Nano Banana       (Aug 2025): gemini-2.5-flash-image       (based on Gemini 2.5 Flash)
+//   - Nano Banana Pro   (Nov 2025): gemini-3-pro-image-preview   (based on Gemini 3 Pro)
+//   - Nano Banana 2     (Feb 2026): gemini-3.1-flash-image-preview (based on Gemini 3.1 Flash)
 // ============================================================================
 
 async function generateImages(
@@ -161,7 +166,7 @@ async function generateImages(
   imageConfig: ImageGenerationConfig,
   outputDir: string,
   client: GoogleGenAI,
-  modelName: string = 'gemini-3-pro-image-preview',
+  modelName: string = 'gemini-3.1-flash-image-preview',
   quiet: boolean = false
 ): Promise<ImageResult> {
   try {
@@ -179,8 +184,6 @@ async function generateImages(
       responseModalities: ["IMAGE"],
       imageConfig: {
         aspectRatio: imageConfig.aspectRatio,
-        imageSize: "1K",
-        outputMimeType: "image/png",
       },
       safetySettings: [
         { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'OFF' },
@@ -675,15 +678,20 @@ OPTIONS:
 
 IMAGE GENERATION OPTIONS:
   --image <prompt>        Generate images from text prompt
-  --imagen-model <name>   Model (default: gemini-3-pro-image-preview)
+  --imagen-model <name>   Model (default: gemini-3.1-flash-image-preview aka Nano Banana 2)
   --count <n>             Number of images to generate (1-4, default: 1)
   --aspect <ratio>        Aspect ratio: 1:1, 3:4, 4:3, 9:16, 16:9, 2:3, 3:2, 4:5, 5:4, 21:9 (default: 1:1)
 
-MODELS:
-  gemini-3.1-pro-preview  Best quality, thinking/reasoning (default)
-  gemini-3-flash-preview  Fast and cheap
-  gemini-2.5-flash        Legacy, fast
-  gemini-2.5-pro          Legacy, quality
+TEXT MODELS:
+  gemini-3.1-pro-preview        Best quality, thinking/reasoning (default)
+  gemini-3-flash-preview        Fast and cheap
+  gemini-2.5-flash              Legacy, fast
+  gemini-2.5-pro                Legacy, quality
+
+IMAGE MODELS (Nano Banana family):
+  gemini-3.1-flash-image-preview  Nano Banana 2 - fast + quality (default, Feb 2026)
+  gemini-3-pro-image-preview      Nano Banana Pro (Nov 2025)
+  gemini-2.5-flash-image          Nano Banana original (Aug 2025)
 
 BATCH DIRECTORY FORMATS:
 
@@ -848,7 +856,7 @@ async function main(): Promise<void> {
   if (args.has('image')) {
     const imagePrompt = args.get('image') as string;
     const outputDir = (args.get('out') as string) || './generated-images';
-    const imagenModel = (args.get('imagen-model') as string) || 'gemini-3-pro-image-preview';
+    const imagenModel = (args.get('imagen-model') as string) || 'gemini-3.1-flash-image-preview';
     const sampleCount = Math.min(4, Math.max(1, parseInt((args.get('count') as string) || '1')));
     const aspectRatio = (args.get('aspect') as string) || '1:1';
 
