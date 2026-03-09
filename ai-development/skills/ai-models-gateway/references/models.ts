@@ -1,5 +1,5 @@
 /**
- * AI Models Reference - January 2026
+ * AI Models Reference - March 2026
  *
  * This file contains model definitions, pricing, and Cloudflare AI Gateway configuration.
  * Use as a reference or import directly into your scripts.
@@ -135,10 +135,21 @@ export const ANTHROPIC_MODELS = {
     gatewayModel: "anthropic/claude-sonnet-4-5-20250929",
     inputPricePerMTok: 3.00,
     outputPricePerMTok: 15.00,
-    contextWindow: 200_000, // 1M with beta header
+    contextWindow: 200_000,
     maxOutput: 64_000,
     useCase: ["balanced", "coding", "analysis"],
-    notes: "~5000ms latency. Best value. 1M context with header: context-1m-2025-08-07. Use max_tokens.",
+    notes: "Previous gen. 1M context with header: context-1m-2025-08-07. Use max_tokens.",
+  },
+  CLAUDE_SONNET_4_6: {
+    id: "claude-sonnet-4-6",
+    gatewayProvider: "anthropic",
+    gatewayModel: "anthropic/claude-sonnet-4-6",
+    inputPricePerMTok: 3.00,
+    outputPricePerMTok: 15.00,
+    contextWindow: 200_000,
+    maxOutput: 64_000,
+    useCase: ["balanced", "coding", "analysis"],
+    notes: "Latest Sonnet. Successor to Sonnet 4.5. Use max_tokens (not max_completion_tokens).",
   },
   CLAUDE_OPUS_4_5: {
     id: "claude-opus-4-5-20251101",
@@ -148,8 +159,19 @@ export const ANTHROPIC_MODELS = {
     outputPricePerMTok: 25.00,
     contextWindow: 200_000,
     maxOutput: 64_000,
+    useCase: ["complex-reasoning", "research"],
+    notes: "Previous gen. Supports effort param (low/medium/high) as alt to budget_tokens.",
+  },
+  CLAUDE_OPUS_4_6: {
+    id: "claude-opus-4-6",
+    gatewayProvider: "anthropic",
+    gatewayModel: "anthropic/claude-opus-4-6",
+    inputPricePerMTok: 5.00,
+    outputPricePerMTok: 25.00,
+    contextWindow: 200_000,
+    maxOutput: 64_000,
     useCase: ["maximum-intelligence", "research", "complex-reasoning"],
-    notes: "Supports effort param (low/medium/high) as alt to budget_tokens.",
+    notes: "Latest and most capable Claude model. Use max_tokens (not max_completion_tokens).",
   },
 } as const satisfies Record<string, ModelConfig>;
 
@@ -335,8 +357,10 @@ export function calculateCost(
  *
  * Anthropic (use max_tokens, not max_completion_tokens):
  *   anthropic/claude-haiku-4-5-20251001   (~2500ms)
- *   anthropic/claude-sonnet-4-5-20250929  (~5000ms)
- *   anthropic/claude-opus-4-5-20251101
+ *   anthropic/claude-sonnet-4-6           (latest Sonnet)
+ *   anthropic/claude-opus-4-6             (latest Opus - most capable)
+ *   anthropic/claude-sonnet-4-5-20250929  (previous gen)
+ *   anthropic/claude-opus-4-5-20251101    (previous gen)
  *
  * Google (token counts include thinking tokens):
  *   google-ai-studio/gemini-3-flash-preview  (~4100ms)
@@ -352,5 +376,5 @@ export function calculateCost(
  *   deepseek/deepseek-chat
  *   deepseek/deepseek-reasoner
  *
- * Verified via stress testing: 2026-01-01
+ * Updated: 2026-03-09
  */

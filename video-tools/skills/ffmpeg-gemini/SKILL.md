@@ -1,4 +1,5 @@
 ---
+name: ffmpeg-gemini
 description: "Use when working with video files - extracting clips, taking screenshots at timestamps, analyzing videos with Gemini, or processing video for AI models. Triggers on 'ffmpeg', 'video clip', 'screenshot from video', 'video timestamps', 'analyze video', 'split video', 'video to gemini'."
 ---
 
