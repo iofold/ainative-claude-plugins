@@ -4,7 +4,5 @@
   "description": "Git commits, code review, branch management, and verification skills for Claude Code",
   "author": { "name": "ainative" },
   "license": "MIT",
-  "keywords": ["git", "code-review", "commits", "workflow", "verification"],
-  "skills": "./skills",
-  "commands": "./commands"
+  "keywords": ["git", "code-review", "commits", "workflow", "verification"]
 }

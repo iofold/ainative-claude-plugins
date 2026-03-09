@@ -1,6 +1,36 @@
 ---
 name: ui-tester
-description: Use this agent when the user explicitly requests UI testing, interface validation, or browser-based inspection tasks. This agent is specifically designed to operate the Playwright MCP Server in isolation to prevent context pollution in the main agent.\n\nExamples:\n\n<example>\nContext: User wants to verify that a new feature renders correctly in the browser.\nuser: "Can you test the new dashboard UI to make sure all the charts are displaying correctly?"\nassistant: "I'll use the Task tool to launch the ui-tester agent to validate the dashboard interface using Playwright."\n<commentary>\nThe user is requesting UI validation, which requires browser inspection. Use the ui-tester agent to handle this in isolation.\n</commentary>\n</example>\n\n<example>\nContext: User has implemented a responsive design and wants to verify it works.\nuser: "Please check if the mobile view of the login page looks correct"\nassistant: "Let me delegate this to the ui-tester agent to inspect the mobile responsive design using Playwright."\n<commentary>\nUI inspection task requiring browser tools - perfect use case for the ui-tester agent to keep context clean.\n</commentary>\n</example>\n\n<example>\nContext: After making CSS changes, user wants validation.\nuser: "I just updated the styles. Can you verify the changes look good?"\nassistant: "I'll use the Task tool to launch the ui-tester agent to validate your CSS changes in the browser."\n<commentary>\nVisual validation requiring Playwright - delegate to ui-tester to avoid context bloat.\n</commentary>\n</example>
+description: |
+  Use this agent when the user explicitly requests UI testing, interface validation, or browser-based inspection tasks. This agent is specifically designed to operate the Playwright MCP Server in isolation to prevent context pollution in the main agent.
+
+  Examples:
+
+  <example>
+  Context: User wants to verify that a new feature renders correctly in the browser.
+  user: "Can you test the new dashboard UI to make sure all the charts are displaying correctly?"
+  assistant: "I'll use the Task tool to launch the ui-tester agent to validate the dashboard interface using Playwright."
+  <commentary>
+  The user is requesting UI validation, which requires browser inspection. Use the ui-tester agent to handle this in isolation.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User has implemented a responsive design and wants to verify it works.
+  user: "Please check if the mobile view of the login page looks correct"
+  assistant: "Let me delegate this to the ui-tester agent to inspect the mobile responsive design using Playwright."
+  <commentary>
+  UI inspection task requiring browser tools - perfect use case for the ui-tester agent to keep context clean.
+  </commentary>
+  </example>
+
+  <example>
+  Context: After making CSS changes, user wants validation.
+  user: "I just updated the styles. Can you verify the changes look good?"
+  assistant: "I'll use the Task tool to launch the ui-tester agent to validate your CSS changes in the browser."
+  <commentary>
+  Visual validation requiring Playwright - delegate to ui-tester to avoid context bloat.
+  </commentary>
+  </example>
 tools: mcp__playwright__browser_click, mcp__playwright__browser_close, mcp__playwright__browser_console_messages, mcp__playwright__browser_drag, mcp__playwright__browser_evaluate, mcp__playwright__browser_file_upload, mcp__playwright__browser_fill_form, mcp__playwright__browser_handle_dialog, mcp__playwright__browser_hover, mcp__playwright__browser_install, mcp__playwright__browser_navigate, mcp__playwright__browser_navigate_back, mcp__playwright__browser_network_requests, mcp__playwright__browser_press_key, mcp__playwright__browser_resize, mcp__playwright__browser_run_code, mcp__playwright__browser_select_option, mcp__playwright__browser_snapshot, mcp__playwright__browser_tabs, mcp__playwright__browser_take_screenshot, mcp__playwright__browser_type, mcp__playwright__browser_wait_for
 model: haiku
 color: blue

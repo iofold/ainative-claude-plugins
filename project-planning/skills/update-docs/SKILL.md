@@ -1,5 +1,5 @@
 ---
-name: Update Documentation
+name: update-docs
 description: This skill should be used when the user asks to "update documentation", "sync docs with code", "audit docs", "archive old plans", "check if docs are outdated", "verify documentation accuracy", or wants to ensure documentation matches the current codebase state.
 ---
 

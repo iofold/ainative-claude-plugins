@@ -1,7 +1,10 @@
 ---
 name: session-searcher
 description: Search and find previous code agent sessions (Claude-Code or Codex-CLI) for specific work, decisions, or code patterns. Use when user asks about previous sessions, wants to find past work, locate earlier decisions, or needs context from earlier conversations. Returns concise summaries without polluting main context.
-tools: Bash, Read
+color: cyan
+allowed-tools:
+  - Bash
+  - Read
 model: haiku
 ---
 

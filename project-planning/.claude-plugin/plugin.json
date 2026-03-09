@@ -4,7 +4,5 @@
   "description": "Brainstorming, planning, documentation, and issue spec skills for Claude Code",
   "author": { "name": "ainative" },
   "license": "MIT",
-  "keywords": ["planning", "brainstorming", "documentation", "architecture", "specs"],
-  "skills": "./skills",
-  "commands": "./commands"
+  "keywords": ["planning", "brainstorming", "documentation", "architecture", "specs"]
 }

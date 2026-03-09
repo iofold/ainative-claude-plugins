@@ -5,7 +5,6 @@
   "author": { "name": "ainative" },
   "license": "MIT",
   "keywords": ["frontend", "design", "ui", "css", "components", "playwright"],
-  "skills": "./skills",
   "agents": ["./agents/ui-tester.md"],
   "mcpServers": "./mcp.json"
 }

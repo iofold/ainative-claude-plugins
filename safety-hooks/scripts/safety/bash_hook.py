@@ -10,7 +10,7 @@ import os
 # Add hooks directory to Python path so we can import the other modules
 PLUGIN_ROOT = os.environ.get('CLAUDE_PLUGIN_ROOT')
 if PLUGIN_ROOT:
-    hooks_dir = os.path.join(PLUGIN_ROOT, 'hooks')
+    hooks_dir = os.path.join(PLUGIN_ROOT, 'scripts', 'safety')
     if hooks_dir not in sys.path:
         sys.path.insert(0, hooks_dir)
     if PLUGIN_ROOT not in sys.path:

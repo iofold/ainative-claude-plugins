@@ -4,6 +4,5 @@
   "description": "AI model selection, pricing comparison, Gemini batch processing, and multi-provider gateway tools",
   "author": { "name": "ainative" },
   "license": "MIT",
-  "keywords": ["ai", "gemini", "openai", "anthropic", "gateway", "batch-processing", "vertex-ai"],
-  "skills": "./skills"
+  "keywords": ["ai", "gemini", "openai", "anthropic", "gateway", "batch-processing", "vertex-ai"]
 }

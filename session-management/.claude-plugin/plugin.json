@@ -4,8 +4,5 @@
   "description": "Session recovery, search, and context management for Claude Code",
   "author": { "name": "ainative" },
   "license": "MIT",
-  "keywords": ["session", "context", "recovery", "search", "aichat"],
-  "skills": "./skills",
-  "commands": "./commands",
-  "agents": ["./agents/session-searcher.md"]
+  "keywords": ["session", "context", "recovery", "search", "aichat"]
 }

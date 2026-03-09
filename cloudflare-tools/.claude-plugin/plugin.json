@@ -4,6 +4,5 @@
   "description": "Cloudflare Workers, D1, R2, KV, Durable Objects, and Sandbox SDK patterns for Claude Code",
   "author": { "name": "ainative" },
   "license": "MIT",
-  "keywords": ["cloudflare", "workers", "d1", "r2", "kv", "durable-objects", "wrangler", "edge"],
-  "skills": "./skills"
+  "keywords": ["cloudflare", "workers", "d1", "r2", "kv", "durable-objects", "wrangler", "edge"]
 }
