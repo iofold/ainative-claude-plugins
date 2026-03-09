@@ -115,13 +115,14 @@ PROMPT
 cat "$WORK_DIR/emails.json" >> "$WORK_DIR/prompt.txt"
 
 # Call Gemini (using flash for speed/cost, low temperature for consistency)
+# Filter stdout to only the JSON line (bun's dotenv prints a warning line before it)
 bun "$GEMINI_CLI" \
   -p "$WORK_DIR/prompt.txt" \
   --model gemini-3-flash-preview \
   --temperature 0.1 \
   --thinking MINIMAL \
   --json \
-  --quiet > "$WORK_DIR/result.json" 2>/dev/null
+  --quiet 2>/dev/null | grep '^{' > "$WORK_DIR/result.json"
 
 # Parse result and apply categorizations
 python3 - "$WORK_DIR/result.json" "$DB" <<'PYEOF'
