@@ -1,0 +1,9 @@
+{
+  "name": "safety-hooks",
+  "version": "1.0.0",
+  "description": "Safety hooks for Claude Code - bash command validation, git protection, file size limits, and env security",
+  "author": { "name": "ainative" },
+  "license": "MIT",
+  "keywords": ["safety", "hooks", "git", "security", "protection", "env"],
+  "hooks": "./hooks.json"
+}

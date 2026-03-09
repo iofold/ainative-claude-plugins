@@ -1,0 +1,10 @@
+{
+  "name": "agent-orchestration",
+  "version": "1.0.0",
+  "description": "Parallel agent coordination, subagent-driven development, and plan execution for Claude Code",
+  "author": { "name": "ainative" },
+  "license": "MIT",
+  "keywords": ["agents", "parallel", "orchestration", "subagents", "execution"],
+  "skills": "./skills",
+  "commands": "./commands"
+}

@@ -1,0 +1,9 @@
+{
+  "name": "video-tools",
+  "version": "1.0.0",
+  "description": "FFmpeg video processing and Gemini video analysis workflows for Claude Code",
+  "author": { "name": "ainative" },
+  "license": "MIT",
+  "keywords": ["ffmpeg", "video", "gemini", "screenshots", "timestamps", "vertex-ai"],
+  "skills": "./skills"
+}

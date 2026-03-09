@@ -1,0 +1,9 @@
+{
+  "name": "google-workspace",
+  "version": "1.0.0",
+  "description": "Google Workspace integration - Gmail, Drive, Calendar, Docs, Sheets, and Tasks via gws CLI",
+  "author": { "name": "ainative" },
+  "license": "MIT",
+  "keywords": ["google", "gmail", "drive", "calendar", "docs", "sheets", "workspace"],
+  "skills": "./skills"
+}

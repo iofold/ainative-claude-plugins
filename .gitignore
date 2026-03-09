@@ -1,0 +1,50 @@
+# Dependencies
+node_modules/
+.bun/
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Environment and secrets
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+credentials.json
+token.json
+
+# Build output
+dist/
+build/
+*.tsbuildinfo
+
+# Temporary files
+.tmp/
+tmp/
+*.tmp
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Logs
+*.log
+logs/
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Lock files (plugins should use their own)
+# Keep bun.lockb and package-lock.json per plugin

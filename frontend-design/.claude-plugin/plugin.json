@@ -1,0 +1,11 @@
+{
+  "name": "frontend-design",
+  "version": "1.0.0",
+  "description": "Create distinctive, production-grade frontend interfaces with high design quality",
+  "author": { "name": "ainative" },
+  "license": "MIT",
+  "keywords": ["frontend", "design", "ui", "css", "components", "playwright"],
+  "skills": "./skills",
+  "agents": ["./agents/ui-tester.md"],
+  "mcpServers": "./mcp.json"
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "ainative-claude-tools",
+  "description": "AI-native development tools for Claude Code - curated plugins for modern software engineering workflows",
+  "owner": {
+    "name": "ainative"
+  },
+  "metadata": {
+    "version": "1.0.0"
+  },
+  "plugins": [
+    { "name": "developer-workflow", "source": "./developer-workflow" },
+    { "name": "project-planning", "source": "./project-planning" },
+    { "name": "agent-orchestration", "source": "./agent-orchestration" },
+    { "name": "code-quality", "source": "./code-quality" },
+    { "name": "ai-development", "source": "./ai-development" },
+    { "name": "cloudflare-tools", "source": "./cloudflare-tools" },
+    { "name": "safety-hooks", "source": "./safety-hooks" },
+    { "name": "session-management", "source": "./session-management" },
+    { "name": "frontend-design", "source": "./frontend-design" },
+    { "name": "video-tools", "source": "./video-tools" },
+    { "name": "google-workspace", "source": "./google-workspace" }
+  ]
+}

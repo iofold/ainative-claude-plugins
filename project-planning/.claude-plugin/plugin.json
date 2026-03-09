@@ -1,0 +1,10 @@
+{
+  "name": "project-planning",
+  "version": "1.0.0",
+  "description": "Brainstorming, planning, documentation, and issue spec skills for Claude Code",
+  "author": { "name": "ainative" },
+  "license": "MIT",
+  "keywords": ["planning", "brainstorming", "documentation", "architecture", "specs"],
+  "skills": "./skills",
+  "commands": "./commands"
+}

@@ -1,0 +1,10 @@
+{
+  "name": "code-quality",
+  "version": "1.0.0",
+  "description": "Test-driven development and systematic debugging skills for Claude Code",
+  "author": { "name": "ainative" },
+  "license": "MIT",
+  "keywords": ["tdd", "testing", "debugging", "quality", "red-green-refactor"],
+  "skills": "./skills",
+  "commands": "./commands"
+}
