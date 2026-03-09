@@ -45,71 +45,98 @@ export type ThinkingLevel = "minimal" | "low" | "medium" | "high";
 // =============================================================================
 
 export const OPENAI_MODELS = {
+  // --- GPT-5.4 family (latest flagship, March 2026) ---
+  GPT_5_4: {
+    id: "gpt-5.4",
+    gatewayProvider: "openai",
+    gatewayModel: "openai/gpt-5.4",
+    inputPricePerMTok: 2.50,
+    outputPricePerMTok: 15.00,
+    contextWindow: 1_050_000,
+    maxOutput: 128_000,
+    useCase: ["flagship", "professional", "complex-reasoning"],
+    notes: "Latest flagship. 1.05M context. reasoning_effort: none(default)/low/medium/high/xhigh. 2x input & 1.5x output for >272K tokens. Snapshot: gpt-5.4-2026-03-05.",
+  },
+  GPT_5_4_PRO: {
+    id: "gpt-5.4-pro",
+    gatewayProvider: "openai",
+    gatewayModel: "openai/gpt-5.4-pro",
+    inputPricePerMTok: 30.00,
+    outputPricePerMTok: 180.00,
+    contextWindow: 1_050_000,
+    maxOutput: 128_000,
+    useCase: ["maximum-intelligence", "high-stakes", "research"],
+    notes: "Smartest OpenAI model. reasoning_effort: medium/high/xhigh. Responses API only. 2x input & 1.5x output for >272K tokens. Snapshot: gpt-5.4-pro-2026-03-05.",
+  },
+
+  // --- GPT-5 family ---
+  GPT_5: {
+    id: "gpt-5",
+    gatewayProvider: "openai",
+    gatewayModel: "openai/gpt-5",
+    inputPricePerMTok: 1.25,
+    outputPricePerMTok: 10.00,
+    contextWindow: 400_000,
+    maxOutput: 128_000,
+    useCase: ["coding", "agentic-tasks", "reasoning"],
+    notes: "Reasoning model for coding/agentic tasks. reasoning_effort: minimal/low/medium/high. Snapshot: gpt-5-2025-08-07.",
+  },
+  GPT_5_PRO: {
+    id: "gpt-5-pro",
+    gatewayProvider: "openai",
+    gatewayModel: "openai/gpt-5-pro",
+    inputPricePerMTok: 15.00,
+    outputPricePerMTok: 120.00,
+    contextWindow: 400_000,
+    maxOutput: 272_000,
+    useCase: ["maximum-intelligence", "research", "complex-reasoning"],
+    notes: "Highest reasoning. 272K max output. Responses API only. Snapshot: gpt-5-pro-2025-10-06.",
+  },
+  GPT_5_MINI: {
+    id: "gpt-5-mini",
+    gatewayProvider: "openai",
+    gatewayModel: "openai/gpt-5-mini",
+    inputPricePerMTok: 0.25,
+    outputPricePerMTok: 2.00,
+    contextWindow: 400_000,
+    maxOutput: 128_000,
+    useCase: ["balanced", "cost-efficient", "well-defined-tasks"],
+    notes: "Cost-efficient GPT-5 for well-defined tasks. Snapshot: gpt-5-mini-2025-08-07.",
+  },
   GPT_5_NANO: {
     id: "gpt-5-nano",
     gatewayProvider: "openai",
     gatewayModel: "openai/gpt-5-nano",
-    inputPricePerMTok: 0.10,
+    inputPricePerMTok: 0.05,
     outputPricePerMTok: 0.40,
-    contextWindow: 128_000,
-    maxOutput: 16_384,
+    contextWindow: 400_000,
+    maxOutput: 128_000,
     useCase: ["hooks", "scripts", "classification", "extraction"],
-    notes: "Cheapest OpenAI model. Supports reasoning (~220ms latency).",
+    notes: "Cheapest & fastest OpenAI model. Supports reasoning. Snapshot: gpt-5-nano-2025-08-07.",
+  },
+
+  // --- Previous generation (still available) ---
+  GPT_5_2: {
+    id: "gpt-5.2",
+    gatewayProvider: "openai",
+    gatewayModel: "openai/gpt-5.2",
+    inputPricePerMTok: 1.75,
+    outputPricePerMTok: 14.00,
+    contextWindow: 400_000,
+    maxOutput: 128_000,
+    useCase: ["complex-reasoning", "analysis"],
+    notes: "Previous frontier. reasoning_effort: none(default)/low/medium/high/xhigh. Replaced by gpt-5.4. Snapshot: gpt-5.2-2025-12-11.",
   },
   GPT_5_1: {
     id: "gpt-5.1",
     gatewayProvider: "openai",
     gatewayModel: "openai/gpt-5.1",
-    inputPricePerMTok: 0.30,
-    outputPricePerMTok: 1.20,
-    contextWindow: 200_000,
-    maxOutput: 32_000,
-    useCase: ["balanced", "general", "chat"],
-    notes: "Balanced model. No variants (mini/nano/turbo don't exist). ~1700ms latency.",
-  },
-  GPT_5_2_CHAT: {
-    id: "gpt-5.2-chat-latest",
-    gatewayProvider: "openai",
-    gatewayModel: "openai/gpt-5.2-chat-latest",
-    inputPricePerMTok: 0.50,
-    outputPricePerMTok: 2.00,
-    contextWindow: 400_000,
-    maxOutput: 16_384,
-    useCase: ["low-latency", "chat", "general"],
-    notes: "Fast responses (~260ms). NOTE: 'gpt-5.2-instant' does NOT exist - use this ID.",
-  },
-  GPT_5_2_THINKING: {
-    id: "gpt-5.2-thinking",
-    gatewayProvider: "openai",
-    gatewayModel: "openai/gpt-5.2-thinking",
-    inputPricePerMTok: 1.75,
-    outputPricePerMTok: 14.00,
-    contextWindow: 400_000,
-    maxOutput: 128_000,
-    useCase: ["complex-reasoning", "analysis", "research"],
-    notes: "Deep reasoning. Use max_completion_tokens (not max_tokens).",
-  },
-  GPT_5_2_PRO: {
-    id: "gpt-5.2-pro",
-    gatewayProvider: "openai",
-    gatewayModel: "openai/gpt-5.2-pro",
-    inputPricePerMTok: 5.00,
-    outputPricePerMTok: 30.00,
-    contextWindow: 400_000,
-    maxOutput: 128_000,
-    useCase: ["maximum-intelligence", "high-stakes", "research"],
-    notes: "Supports xhigh reasoning_effort. Responses API only.",
-  },
-  GPT_5_2_CODEX: {
-    id: "gpt-5.2-codex",
-    gatewayProvider: "openai",
-    gatewayModel: "openai/gpt-5.2-codex",
-    inputPricePerMTok: 2.00,
+    inputPricePerMTok: 1.25,
     outputPricePerMTok: 10.00,
     contextWindow: 400_000,
     maxOutput: 128_000,
-    useCase: ["coding", "agentic-tasks", "code-review"],
-    notes: "Optimized for agentic coding workflows.",
+    useCase: ["coding", "agentic-tasks"],
+    notes: "Coding/agentic flagship. reasoning_effort: none(default)/low/medium/high. Snapshot: gpt-5.1-2025-11-13.",
   },
 } as const satisfies Record<string, ModelConfig>;
 
@@ -180,49 +207,87 @@ export const ANTHROPIC_MODELS = {
 // =============================================================================
 
 export const GOOGLE_MODELS = {
+  // --- Gemini 3.1 series (latest, March 2026) ---
+  GEMINI_3_1_PRO_PREVIEW: {
+    id: "gemini-3.1-pro-preview",
+    gatewayProvider: "google-ai-studio",
+    gatewayModel: "google-ai-studio/gemini-3.1-pro-preview",
+    inputPricePerMTok: 2.00,
+    outputPricePerMTok: 12.00,
+    contextWindow: 1_048_576,
+    maxOutput: 65_536,
+    useCase: ["complex-reasoning", "agentic", "multimodal"],
+    notes: "Latest Pro. Thinking supported. 2x input & 1.5x output for >200K tokens. Cutoff: Jan 2025.",
+  },
+  GEMINI_3_1_FLASH_LITE_PREVIEW: {
+    id: "gemini-3.1-flash-lite-preview",
+    gatewayProvider: "google-ai-studio",
+    gatewayModel: "google-ai-studio/gemini-3.1-flash-lite-preview",
+    inputPricePerMTok: 0.25,
+    outputPricePerMTok: 1.50,
+    contextWindow: 1_048_576,
+    maxOutput: 65_536,
+    useCase: ["budget", "high-frequency", "lightweight"],
+    notes: "Most cost-efficient Gemini. Thinking supported. March 2026.",
+  },
+
+  // --- Gemini 3.0 series ---
   GEMINI_3_FLASH_PREVIEW: {
     id: "gemini-3-flash-preview",
     gatewayProvider: "google-ai-studio",
     gatewayModel: "google-ai-studio/gemini-3-flash-preview",
-    inputPricePerMTok: 0.20,
-    outputPricePerMTok: 0.80,
-    contextWindow: 1_000_000,
-    maxOutput: 64_000,
+    inputPricePerMTok: 0.50,
+    outputPricePerMTok: 3.00,
+    contextWindow: 1_048_576,
+    maxOutput: 65_536,
     useCase: ["fast", "pro-level", "multimodal"],
-    notes: "~4100ms latency. Preview. Token counts include thinking tokens. Use thinking_level (not thinking_budget).",
+    notes: "Pro-level intelligence at Flash speed/price. Thinking supported. Free tier for <=200K tokens.",
   },
   GEMINI_3_PRO_PREVIEW: {
     id: "gemini-3-pro-preview",
     gatewayProvider: "google-ai-studio",
     gatewayModel: "google-ai-studio/gemini-3-pro-preview",
-    inputPricePerMTok: 1.50,
+    inputPricePerMTok: 2.00,
     outputPricePerMTok: 12.00,
-    contextWindow: 1_000_000,
-    maxOutput: 64_000,
-    useCase: ["complex-reasoning", "latest-features", "multimodal"],
-    notes: "~7000ms latency. Preview. Token counts include thinking. Pass thought_signatures for multi-turn agents.",
+    contextWindow: 1_048_576,
+    maxOutput: 65_536,
+    useCase: ["complex-reasoning", "multimodal"],
+    notes: "DEPRECATED - use gemini-3.1-pro-preview instead. 2x input & 1.5x output for >200K tokens.",
   },
-  GEMINI_2_5_FLASH: {
-    id: "gemini-2.5-flash",
-    gatewayProvider: "google-ai-studio",
-    gatewayModel: "google-ai-studio/gemini-2.5-flash",
-    inputPricePerMTok: 0.15,
-    outputPricePerMTok: 0.60,
-    contextWindow: 1_000_000,
-    maxOutput: 64_000,
-    useCase: ["budget", "long-context", "batch"],
-    notes: "~3000ms latency. Production. Cheapest 1M context model.",
-  },
+
+  // --- Gemini 2.5 series (stable/production) ---
   GEMINI_2_5_PRO: {
     id: "gemini-2.5-pro",
     gatewayProvider: "google-ai-studio",
     gatewayModel: "google-ai-studio/gemini-2.5-pro",
     inputPricePerMTok: 1.25,
     outputPricePerMTok: 10.00,
-    contextWindow: 1_000_000,
-    maxOutput: 64_000,
+    contextWindow: 1_048_576,
+    maxOutput: 65_536,
     useCase: ["production", "quality", "long-context"],
-    notes: "~4000ms latency. Production. 2x input price for >200K tokens.",
+    notes: "Stable. 2x input & 1.5x output for >200K tokens.",
+  },
+  GEMINI_2_5_FLASH: {
+    id: "gemini-2.5-flash",
+    gatewayProvider: "google-ai-studio",
+    gatewayModel: "google-ai-studio/gemini-2.5-flash",
+    inputPricePerMTok: 0.30,
+    outputPricePerMTok: 2.50,
+    contextWindow: 1_048_576,
+    maxOutput: 65_536,
+    useCase: ["balanced", "long-context", "batch"],
+    notes: "Stable. Free tier for <=200K tokens. Thinking supported.",
+  },
+  GEMINI_2_5_FLASH_LITE: {
+    id: "gemini-2.5-flash-lite",
+    gatewayProvider: "google-ai-studio",
+    gatewayModel: "google-ai-studio/gemini-2.5-flash-lite",
+    inputPricePerMTok: 0.10,
+    outputPricePerMTok: 0.40,
+    contextWindow: 1_048_576,
+    maxOutput: 65_536,
+    useCase: ["budget", "batch", "high-frequency"],
+    notes: "Cheapest Gemini. Stable. Free tier for <=200K tokens.",
   },
 } as const satisfies Record<string, ModelConfig>;
 
@@ -347,26 +412,30 @@ export function calculateCost(
  * provider prefix (e.g., "openai/gpt-5-nano" not just "gpt-5-nano").
  * Without the prefix, you'll get "400 Bad format" errors.
  *
- * OpenAI:
- *   openai/gpt-5-nano           (~220ms, cheapest, has reasoning)
- *   openai/gpt-5.1              (~1700ms, balanced - NO variants exist)
- *   openai/gpt-5.2-chat-latest  (~260ms, fast - "gpt-5.2-instant" does NOT exist!)
- *   openai/gpt-5.2-thinking
- *   openai/gpt-5.2-pro
- *   openai/gpt-5.2-codex
+ * OpenAI (use max_completion_tokens, not max_tokens):
+ *   openai/gpt-5.4              (latest flagship, 1.05M context, $2.50/$15)
+ *   openai/gpt-5.4-pro          (smartest OpenAI, $30/$180, Responses API only)
+ *   openai/gpt-5                (coding/agentic, $1.25/$10)
+ *   openai/gpt-5-pro            (deep reasoning, 272K output, $15/$120)
+ *   openai/gpt-5-mini           (cost-efficient, $0.25/$2)
+ *   openai/gpt-5-nano           (cheapest, $0.05/$0.40)
+ *   openai/gpt-5.2              (previous frontier, $1.75/$14)
+ *   openai/gpt-5.1              (previous coding flagship, $1.25/$10)
  *
  * Anthropic (use max_tokens, not max_completion_tokens):
- *   anthropic/claude-haiku-4-5-20251001   (~2500ms)
+ *   anthropic/claude-opus-4-6             (latest, most capable)
  *   anthropic/claude-sonnet-4-6           (latest Sonnet)
- *   anthropic/claude-opus-4-6             (latest Opus - most capable)
+ *   anthropic/claude-haiku-4-5-20251001   (fast/cheap)
  *   anthropic/claude-sonnet-4-5-20250929  (previous gen)
  *   anthropic/claude-opus-4-5-20251101    (previous gen)
  *
- * Google (token counts include thinking tokens):
- *   google-ai-studio/gemini-3-flash-preview  (~4100ms)
- *   google-ai-studio/gemini-3-pro-preview    (~7000ms)
- *   google-ai-studio/gemini-2.5-flash        (~3000ms)
- *   google-ai-studio/gemini-2.5-pro          (~4000ms)
+ * Google (token counts include thinking tokens, use thinking_level):
+ *   google-ai-studio/gemini-3.1-pro-preview       (latest Pro, $2/$12)
+ *   google-ai-studio/gemini-3.1-flash-lite-preview (cheapest 3.1, $0.25/$1.50)
+ *   google-ai-studio/gemini-3-flash-preview        (pro-level Flash, $0.50/$3)
+ *   google-ai-studio/gemini-2.5-pro                (stable, $1.25/$10)
+ *   google-ai-studio/gemini-2.5-flash              (stable, $0.30/$2.50)
+ *   google-ai-studio/gemini-2.5-flash-lite         (cheapest, $0.10/$0.40)
  *
  * xAI:
  *   xai/grok-4.1-fast

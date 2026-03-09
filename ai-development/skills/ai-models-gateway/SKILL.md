@@ -1,7 +1,7 @@
 ---
 name: ai-models-gateway
 description: |
-  This skill should be used when the user asks "which model should I use", "compare model prices", "cheapest LLM", "fastest model", "AI Gateway setup", "unified endpoint", "multi-provider AI", "model fallback", "OpenAI compatible endpoint", or questions about GPT-5.1, GPT-5.2, Claude 4.5, Claude 4.6, Gemini 2.5, Gemini 3 models. Provides model selection guidance, pricing comparisons, and Cloudflare AI Gateway configuration.
+  This skill should be used when the user asks "which model should I use", "compare model prices", "cheapest LLM", "fastest model", "AI Gateway setup", "unified endpoint", "multi-provider AI", "model fallback", "OpenAI compatible endpoint", or questions about GPT-5.4, GPT-5, GPT-5-mini, GPT-5-nano, Claude 4.5, Claude 4.6, Gemini 2.5, Gemini 3, Gemini 3.1 models. Provides model selection guidance, pricing comparisons, and Cloudflare AI Gateway configuration.
 ---
 
 # AI Models & Cloudflare AI Gateway
@@ -20,35 +20,35 @@ For detailed information, consult:
 
 ## Quick Model Selection
 
-| Use Case | Recommended Model | Price (Input/MTok) | Latency |
+| Use Case | Recommended Model | Price (Input/MTok) | Context |
 |----------|-------------------|-------------------|---------|
-| **Cheap & fast** | `gpt-5-nano` | $0.10 | ~220ms |
-| **Balanced** | `gpt-5.1`, `gpt-5.2-chat-latest` | $0.30-0.50 | ~260-1700ms |
-| **Complex reasoning** | `gpt-5.2-thinking`, `gemini-3-pro-preview` | $1.50-1.75 | ~7000ms |
-| **Maximum intelligence** | `gpt-5.2-pro`, `claude-opus-4-6` | $5.00 | varies |
-| **Long context (1M+)** | `gemini-2.5-flash` | $0.15 | ~3000ms |
-| **Code generation** | `gpt-5.2-codex`, `claude-sonnet-4-6` | $2.00-3.00 | varies |
-
-> **Note:** `gpt-5.2-instant` does NOT exist. Use `gpt-5.2-chat-latest` instead.
+| **Cheapest** | `gpt-5-nano` | $0.05 | 400K |
+| **Budget + 1M context** | `gemini-2.5-flash-lite` | $0.10 | 1M |
+| **Balanced** | `gpt-5-mini`, `gemini-2.5-flash` | $0.25-0.30 | 400K-1M |
+| **Flagship** | `gpt-5.4`, `gemini-3.1-pro-preview` | $2.00-2.50 | 1M+ |
+| **Code/agentic** | `gpt-5`, `claude-sonnet-4-6` | $1.25-3.00 | 200K-400K |
+| **Maximum intelligence** | `gpt-5.4-pro`, `claude-opus-4-6` | $5.00-30.00 | 200K-1M |
+| **Long context (1M+)** | `gemini-2.5-flash`, `gpt-5.4` | $0.30-2.50 | 1M+ |
 
 ## Model Selection Decision Tree
 
 ```
 Is cost the primary concern?
-├── Yes → gpt-5-nano ($0.10)
+├── Yes → gpt-5-nano ($0.05) or gemini-2.5-flash-lite ($0.10, 1M context)
 │
-├── Need long context (>200K)?
-│   └── gemini-2.5-flash (1M, $0.15)
+├── Need long context (>400K)?
+│   ├── Budget → gemini-2.5-flash (1M, $0.30)
+│   └── Quality → gpt-5.4 (1.05M, $2.50)
 │
 ├── Need maximum intelligence?
-│   ├── OpenAI → gpt-5.2-pro (xhigh reasoning)
-│   └── Anthropic → claude-opus-4-6 (latest, most capable)
+│   ├── OpenAI → gpt-5.4-pro ($30, xhigh reasoning)
+│   └── Anthropic → claude-opus-4-6 ($5)
 │
 ├── Code/agentic tasks?
-│   └── gpt-5.2-codex or claude-sonnet-4-6
+│   └── gpt-5 ($1.25) or claude-sonnet-4-6 ($3)
 │
 └── Balanced quality/cost?
-    └── gemini-3-pro-preview or claude-sonnet-4-6
+    └── gpt-5-mini ($0.25) or gemini-3-flash-preview ($0.50)
 ```
 
 ## Cloudflare AI Gateway
@@ -67,11 +67,11 @@ https://gateway.ai.cloudflare.com/v1/{account_id}/{gateway_id}/compat/chat/compl
 ```
 
 **CRITICAL:** You MUST use `{provider}/{model}` format. Without the provider prefix, you'll get `400 Bad format` errors:
-- `openai/gpt-5-nano` (not just `gpt-5-nano`)
-- `openai/gpt-5.1` (no variants like mini/nano/turbo exist)
-- `openai/gpt-5.2-chat-latest` (not `gpt-5.2-instant` - that doesn't exist!)
-- `anthropic/claude-sonnet-4-6`
-- `google-ai-studio/gemini-2.5-flash`
+- `openai/gpt-5.4` (not just `gpt-5.4`)
+- `openai/gpt-5-nano` (cheapest)
+- `anthropic/claude-opus-4-6` (latest Claude)
+- `google-ai-studio/gemini-3.1-pro-preview` (latest Gemini)
+- `google-ai-studio/gemini-2.5-flash` (stable budget)
 
 ### Configuration
 
@@ -106,7 +106,8 @@ const response = await client.chat.completions.create({
 - **OpenAI models:** Use `max_completion_tokens` (not `max_tokens`), supports reasoning tokens
 - **Claude 4.5/4.6/Haiku:** Cannot use both `temperature` AND `top_p` - pick one only
 - **Gemini 3:** Use `thinking_level` (not `thinking_budget`). Token counts include internal thinking tokens
-- **GPT 5.1:** Only `openai/gpt-5.1` exists - no mini/nano/turbo/preview variants
+- **GPT-5.4:** 2x input & 1.5x output pricing for prompts >272K tokens
+- **Migration:** gpt-5.2 → gpt-5.4, o3 → gpt-5.2 (medium reasoning), o4-mini → gpt-5-mini
 
 ## Helper Script Usage
 
