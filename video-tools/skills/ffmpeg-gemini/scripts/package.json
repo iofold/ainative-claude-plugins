@@ -1,0 +1,10 @@
+{
+  "name": "ffmpeg-gemini-scripts",
+  "private": true,
+  "dependencies": {
+    "@google/genai": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24"
+  }
+}
