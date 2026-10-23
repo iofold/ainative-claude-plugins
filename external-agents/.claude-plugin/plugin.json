@@ -1,0 +1,8 @@
+{
+  "name": "external-agents",
+  "version": "1.0.0",
+  "description": "Dispatch coding tasks to external AI CLI agents (Codex CLI, Gemini CLI) with git worktree isolation, Docker container support, and conflict prevention for parallel execution",
+  "author": { "name": "ainative" },
+  "license": "MIT",
+  "keywords": ["codex", "gemini", "external-agents", "dispatch", "isolation", "worktree", "docker", "parallel", "sandbox"]
+}
