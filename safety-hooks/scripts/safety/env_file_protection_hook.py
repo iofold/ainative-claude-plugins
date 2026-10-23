@@ -13,6 +13,10 @@ def check_env_file_access(command):
     # Normalize the command
     normalized_cmd = ' '.join(command.strip().split())
 
+    # Whitelist: vault and env-safe commands are allowed to interact with .env
+    if normalized_cmd.startswith(("vault ", "env-safe ")):
+        return False, None
+
     # Patterns that indicate reading, writing, or editing .env files
     env_patterns = [
         # Direct file reading
@@ -80,9 +84,12 @@ def check_env_file_access(command):
                 "  - `env-safe list --status` - Show keys with defined/empty status\n"
                 "  - `env-safe check KEY_NAME` - Check if a specific key exists\n"
                 "  - `env-safe count` - Count variables in the file\n"
-                "  - `env-safe validate` - Check .env file syntax\n"
-                "  - `env-safe --help` - See all options\n\n"
-                "To modify .env files, please edit them manually outside of Claude Code."
+                "  - `env-safe validate` - Check .env file syntax\n\n"
+                "To inject secrets from the vault into .env:\n"
+                "  - `vault inject KEY1 KEY2` - Inject specific keys\n"
+                "  - `vault inject VAULT_KEY=ENV_KEY` - Inject with name mapping\n"
+                "  - `vault inject --mapped` - Inject all project-mapped keys\n"
+                "  - `vault keys` - List available secrets in the vault"
             )
             return True, reason_text
 
