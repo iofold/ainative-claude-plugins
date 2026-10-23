@@ -6,5 +6,5 @@
   "license": "MIT",
   "keywords": ["frontend", "design", "ui", "css", "components", "playwright"],
   "agents": ["./agents/ui-tester.md"],
-  "mcpServers": "./mcp.json"
+  "mcpServers": "./.mcp.json"
 }
