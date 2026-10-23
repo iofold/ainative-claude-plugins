@@ -1,0 +1,8 @@
+{
+  "name": "telegram-messaging",
+  "version": "1.0.0",
+  "description": "Send messages, documents, and reports to Telegram via bot API. Supports text, Markdown, HTML, and file uploads.",
+  "author": { "name": "ainative" },
+  "license": "MIT",
+  "keywords": ["telegram", "messaging", "notifications", "reports"]
+}
