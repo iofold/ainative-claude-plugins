@@ -1,8 +1,8 @@
 {
   "name": "ai-development",
   "version": "1.0.0",
-  "description": "AI model selection, pricing comparison, Gemini batch processing, and multi-provider gateway tools",
+  "description": "AI model selection, pricing comparison, Gemini batch processing, scraping/search guidance, and multi-provider gateway tools",
   "author": { "name": "ainative" },
   "license": "MIT",
-  "keywords": ["ai", "gemini", "openai", "anthropic", "gateway", "batch-processing", "vertex-ai"]
+  "keywords": ["ai", "gemini", "openai", "anthropic", "gateway", "batch-processing", "vertex-ai", "scraping", "search", "seo", "apify"]
 }

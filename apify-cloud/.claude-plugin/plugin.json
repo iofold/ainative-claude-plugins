@@ -1,0 +1,21 @@
+{
+  "name": "apify-cloud",
+  "version": "1.0.0",
+  "description": "Safe Apify Actor workflows for web, Reddit, X/Twitter, SEO/GEO, SERP, and GTM research with spend caps and dataset export",
+  "author": {
+    "name": "ainative"
+  },
+  "license": "MIT",
+  "keywords": [
+    "apify",
+    "actors",
+    "web-scraping",
+    "seo",
+    "serp",
+    "geo",
+    "gtm",
+    "reddit",
+    "twitter",
+    "datasets"
+  ]
+}

@@ -1,9 +1,9 @@
 ---
 name: scraping-tools
-description: This skill should be used when WebFetch fails (403, blocked, timeout), when the user asks to "scrape this URL", "fetch this page", "search the web for", "find articles about", or when you need to extract content from a URL that blocks standard fetching. Provides Firecrawl for scraping and Exa for semantic search as fallbacks.
+description: "Scrape web pages and search the web when WebFetch fails (403, blocked, JS-heavy). Provides Firecrawl and Exa guidance, plus routing to Apify for structured SEO/GTM datasets."
 ---
 
-# Scraping Tools: Firecrawl + Exa
+# Scraping Tools: Firecrawl + Exa + Apify Routing
 
 Fallback web scraping and search when built-in WebFetch fails (403s, bot blocks, JS-heavy pages).
 
@@ -13,14 +13,25 @@ Fallback web scraping and search when built-in WebFetch fails (403s, bot blocks,
 2. **Need to search the web semantically** - use Exa search
 3. **JS-heavy pages** that return empty content - use Firecrawl
 4. **Find similar content** to a URL - use Exa findSimilar
+5. **Need structured SEO/GTM, SERP, ad-library, Reddit, or X datasets** - use the `apify-cloud` plugin when installed
 
 ## Prerequisites
 
-Set these environment variables (add to `.env` or export):
+API keys required: `FIRECRAWL_API_KEY`, `EXA_API_KEY`
+
+For Apify workflows, install or enable the `apify-cloud` plugin and set `APIFY_API_TOKEN` or `APIFY_TOKEN`.
+Get keys from: [Firecrawl](https://firecrawl.dev) | [Exa](https://exa.ai)
+
+**Option A — Already in vault (recommended):**
 ```bash
-export FIRECRAWL_API_KEY="fc-..."    # Get from https://firecrawl.dev
-export EXA_API_KEY="..."              # Get from https://exa.ai
+# Check if keys exist
+vault keys
+# Inject into current project .env
+vault inject FIRECRAWL_API_KEY EXA_API_KEY
 ```
+
+**Option B — Claude Code session env:**
+Set in `~/.claude/settings.json` under the `env` key (available as `process.env` automatically).
 
 ## Firecrawl: Scrape Any URL
 
@@ -109,6 +120,7 @@ curl -s -X POST 'https://api.exa.ai/findSimilar' \
 | Find docs for a library | Exa search with `type: "auto"` | `curl POST /search` |
 | Find pages like this one | Exa findSimilar | `curl POST /findSimilar` |
 | Bulk scrape multiple pages | Firecrawl search | `curl POST /v2/search` |
+| Structured SERP/keyword/ad-library/social dataset | Apify Cloud | `apify-seo-gtm-research`, `apify-reddit-research`, or `apify-x-research` |
 
 ## Fallback Chain
 
@@ -118,6 +130,7 @@ Follow this order when fetching web content:
 2. **If 403/blocked/empty** → use Firecrawl scrape
 3. **If Firecrawl unavailable** (no API key) → use Exa contents endpoint
 4. **For search queries** → use Exa search (semantic) or Firecrawl search (keyword + scrape)
+5. **For repeatable structured datasets** → use Apify with a tiny capped smoke test and `maxTotalChargeUsd`
 
 ## Tips
 
@@ -126,4 +139,5 @@ Follow this order when fetching web content:
 - Use `waitFor: 3000` for JS-heavy pages that need time to render
 - Exa's `type: "auto"` picks between keyword and neural search automatically
 - Both APIs have free tiers - Firecrawl: 500 credits/month, Exa: 1000 searches/month
+- Apify runs can incur charges; always start with `--dry-run`, low item counts, and explicit spend caps
 - Pipe markdown output through `head -100` to avoid flooding context
