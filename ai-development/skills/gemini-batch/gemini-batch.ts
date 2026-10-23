@@ -22,20 +22,12 @@
 // Dependencies with pinned versions (Bun auto-install)
 import { GoogleGenAI } from "@google/genai@^1.0.0";
 import mime from "mime@^4.0.0";
-import { config } from "dotenv@^17.0.0";
-
 // Node.js built-ins (no version needed)
 import {
   readFileSync, writeFileSync, existsSync, mkdirSync,
   readdirSync, statSync
 } from "fs";
-import { join, dirname, resolve, basename, extname } from "path";
-import { fileURLToPath } from "url";
-
-// Load .env from script directory
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-config({ path: join(__dirname, '.env') });
+import { join, resolve, basename, extname } from "path";
 
 // ============================================================================
 // Types
@@ -148,7 +140,7 @@ function initGemini(): GoogleGenAI {
   console.error('Error: No authentication configured.');
   console.error('  Set GEMINI_API_KEY for API key auth, or');
   console.error('  Set VERTEXAI_PROJECT for Vertex AI auth.');
-  console.error('  Configure in the .env file alongside this script.');
+  console.error('  Configure in Claude\'s settings.json or your shell environment.');
   process.exit(1);
 }
 

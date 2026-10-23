@@ -11,8 +11,8 @@ AI-native development tools for Claude Code -- a curated marketplace of plugins 
 | **agent-orchestration** | Multi-agent coordination, sub-agent spawning, and parallel task execution |
 | **code-quality** | Linting, testing, code review, and static analysis integrations |
 | **ai-development** | AI model gateway, prompt engineering, and LLM-assisted development tools |
+| **apify-cloud** | Apify Actor workflows for capped web, social, SEO/GEO, SERP, and GTM research |
 | **cloudflare-tools** | Cloudflare Workers, Pages, D1, and KV management from Claude Code |
-| **safety-hooks** | Pre/post-execution safety checks, command validation, and guardrails |
 | **session-management** | Session persistence, context recovery, and progress logging |
 | **frontend-design** | UI component generation, design system integration, and browser preview |
 | **video-tools** | Video processing, transcription, and media manipulation via ffmpeg |
@@ -60,17 +60,23 @@ plugin-name/
   skills/           # Skill definitions and implementations
   hooks/            # Pre/post execution hooks
   servers/          # MCP server configurations
-  .env.example      # Required environment variables
   README.md         # Plugin-specific documentation
 ```
 
 ## Configuration
 
-Many plugins require API keys or credentials. After installation:
+Many plugins require API keys or credentials. Set environment variables in `~/.claude/settings.json` under the `env` key:
 
-1. Copy `.env.example` to `.env` in each plugin that needs configuration
-2. Fill in the required values (API keys, OAuth tokens, etc.)
-3. Never commit `.env` files -- they are gitignored
+```json
+{
+  "env": {
+    "OPENAI_API_KEY": "sk-your-key",
+    "ANTHROPIC_API_KEY": "your-key",
+    "GEMINI_API_KEY": "your-key",
+    "CLOUDFLARE_API_TOKEN": "your-token"
+  }
+}
+```
 
 Common configuration:
 
@@ -78,6 +84,7 @@ Common configuration:
 |----------|---------|-------------|
 | `OPENAI_API_KEY` | ai-development | OpenAI API access |
 | `ANTHROPIC_API_KEY` | ai-development | Anthropic API access |
+| `APIFY_API_TOKEN` or `APIFY_TOKEN` | apify-cloud | Apify Actor API access |
 | `CLOUDFLARE_API_TOKEN` | cloudflare-tools | Cloudflare account access |
 | `GOOGLE_CLIENT_ID` | google-workspace | Google OAuth client |
 | `GOOGLE_CLIENT_SECRET` | google-workspace | Google OAuth secret |
@@ -95,7 +102,7 @@ Contributions are welcome. To add a new plugin:
 
 Guidelines:
 - Plugins must be self-contained with no cross-plugin dependencies
-- Include `.env.example` if your plugin requires configuration
+- Document required environment variables in your plugin's README
 - Write clear skill descriptions so Claude Code can discover and use them
 - Test your plugin with `claude plugins validate` before submitting
 

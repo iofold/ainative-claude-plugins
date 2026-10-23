@@ -377,6 +377,7 @@ install_python_tools() {
   # Install claude-code-tools (provides tmux-cli, aichat, vault, env-safe)
   step "Installing claude-code-tools..."
   uv tool install claude-code-tools --force 2>/dev/null || uv tool install claude-code-tools || true
+
   success "claude-code-tools installed (tmux-cli, aichat, vault, env-safe)"
 }
 
@@ -460,8 +461,8 @@ setup_marketplace() {
     agent-orchestration
     code-quality
     ai-development
+    apify-cloud
     cloudflare-tools
-    safety-hooks
     session-management
     frontend-design
     video-tools
@@ -554,21 +555,21 @@ print_summary() {
   echo ""
   printf "${BOLD}${YELLOW}Configuration needed:${NC}\n"
   cat <<'CONFIGTEXT'
-  Some plugins require API keys or .env configuration:
+  Set environment variables in ~/.claude/settings.json under the "env" key:
 
-  1. ai-development / cloudflare-tools
-     - Set up relevant API keys in plugin .env files
+    {
+      "env": {
+        "GEMINI_API_KEY": "your-key",
+        "OPENAI_API_KEY": "sk-your-key",
+        "CLOUDFLARE_API_TOKEN": "your-token"
+      }
+    }
 
-  2. google-workspace
-     - Google OAuth credentials required
-     - See google-workspace/README.md for setup
-
-  3. video-tools
-     - Requires ffmpeg (install with system package manager)
-
-  4. General
-     - Review each plugin's README for specific configuration
-     - API keys should go in plugin-level .env files (never committed)
+  Plugin-specific notes:
+  1. google-workspace — Google OAuth credentials required
+     See google-workspace/README.md for setup
+  2. video-tools — Requires ffmpeg (install with system package manager)
+  3. Review each plugin's README for required env vars
 CONFIGTEXT
 
   echo ""

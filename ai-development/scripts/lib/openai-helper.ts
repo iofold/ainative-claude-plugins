@@ -20,18 +20,8 @@
 
 // Dependencies with pinned versions (Bun auto-install - no node_modules needed)
 import OpenAI from "openai@^6.15.0";
-import { config } from "dotenv@^17.2.0";
-
 // Node.js built-ins (no version needed)
 import { readFileSync, existsSync } from "fs";
-import { join, dirname } from "path";
-import { fileURLToPath } from "url";
-
-// Load .env from script directory
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-config({ path: join(__dirname, "..", ".env") });
-config({ path: join(__dirname, ".env") });
 
 // ============================================================================
 // Types
@@ -88,7 +78,7 @@ function getClient(): OpenAI {
     const apiKey = process.env.OPENAI_API_KEY;
     if (!apiKey) {
       throw new Error(
-        "OPENAI_API_KEY not set. Add it to your .env file."
+        "OPENAI_API_KEY not set. Set it in Claude's settings.json or your shell environment."
       );
     }
     const baseURL = process.env.OPENAI_BASE_URL || undefined;
