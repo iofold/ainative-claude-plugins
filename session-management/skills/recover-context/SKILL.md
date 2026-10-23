@@ -1,6 +1,6 @@
 ---
 name: recover-context
-description: This skill should be used when the user asks "where was I?", "what was I working on?", "continue from last session", "resume previous work", "pick up where I left off", "recover context", "restore context", or references a session lineage shown at conversation start. Also use when starting a new conversation that has parent session lineage and user wants to continue previous work.
+description: "Resume previous work by extracting context from parent sessions. Use when the user wants to continue where they left off, recover context, or a session lineage is present at conversation start."
 ---
 
 # recover-context

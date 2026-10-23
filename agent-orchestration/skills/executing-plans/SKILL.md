@@ -1,6 +1,6 @@
 ---
 name: executing-plans
-description: This skill should be used when the user asks to "execute the plan", "run the plan", "implement the plan", "follow the plan", "start implementing", or when there's a written plan file in docs/plans/ to execute. Provides batch execution with checkpoints for review between batches.
+description: Load a plan from docs/plans/, execute tasks in batches with checkpoints for review between batches. Use when there's a written implementation plan to execute in a separate session from the planner.
 ---
 
 # Executing Plans

@@ -1,6 +1,6 @@
 ---
 name: writing-plans
-description: This skill should be used when the user asks to "write a plan", "create an implementation plan", "plan this feature", "break this down", "document the approach", or has a spec/requirements for a multi-step task. Use BEFORE touching code - creates comprehensive bite-sized implementation plans saved to docs/plans/.
+description: Create comprehensive bite-sized implementation plans for multi-step tasks. Use when asked to "write a plan", "plan this feature", "break this down", or when there's a spec/requirements ready for implementation planning. Use BEFORE touching code.
 ---
 
 # Writing Plans

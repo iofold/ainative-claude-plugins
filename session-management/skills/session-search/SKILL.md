@@ -1,6 +1,6 @@
 ---
 name: session-search
-description: This skill should be used when the user asks to "find previous session", "search sessions", "what did I work on before", "find that code from last time", "search conversation history", or needs to find work, decisions, or code patterns from past sessions. For agents WITHOUT subagent support - if you have Task tool, use session-searcher subagent instead.
+description: "Search past Claude Code and Codex sessions for previous work, decisions, or code patterns. Use when the user asks to find something from a previous conversation. Prefer session-searcher subagent via Task tool if available."
 ---
 
 > **If you are Claude Code:** Do NOT use this skill directly. Use the

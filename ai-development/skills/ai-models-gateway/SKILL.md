@@ -1,7 +1,6 @@
 ---
 name: ai-models-gateway
-description: |
-  This skill should be used when the user asks "which model should I use", "compare model prices", "cheapest LLM", "fastest model", "AI Gateway setup", "unified endpoint", "multi-provider AI", "model fallback", "OpenAI compatible endpoint", or questions about GPT-5.4, GPT-5, GPT-5-mini, GPT-5-nano, Claude 4.5, Claude 4.6, Gemini 2.5, Gemini 3, Gemini 3.1 models. Provides model selection guidance, pricing comparisons, and Cloudflare AI Gateway configuration.
+description: "Compare AI model pricing, select the best model for a task, or configure Cloudflare AI Gateway as a unified multi-provider endpoint. Covers GPT-5.4/5/5-mini/5-nano, Claude Opus 4.6/Sonnet 4.6, and Gemini 3.1/3/2.5 families."
 ---
 
 # AI Models & Cloudflare AI Gateway

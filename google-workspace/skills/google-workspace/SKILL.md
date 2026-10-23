@@ -1,51 +1,95 @@
 ---
 name: google-workspace
 description: "Interact with Google Workspace (Gmail, Drive, Calendar, Docs, Sheets, Tasks) via the gws CLI. Use when the user asks to read emails, check calendar, manage drive files, send emails, create events, read spreadsheets, or any Google Workspace operation."
-disable-model-invocation: true
 ---
 
 # Google Workspace CLI (gws)
 
 Binary: `gws` (must be on PATH)
-Auth: OAuth2 with your authenticated Google account (encrypted credentials in ~/.config/gws/)
+Auth: OAuth2 with authenticated Google account (credentials in ~/.config/gws/)
 
-## Installation
+## Quick Reference
 
-### gws CLI
+### Gmail
 ```bash
-pnpm add -g gws
+gws gmail +triage --max 10                    # Triage unread inbox
+gws gmail +triage --query "from:user@ex.com"  # Triage with search
+gws gmail users messages get --params '{"userId":"me","id":"MSG_ID"}' --format json  # Read specific email
+gws gmail +send --to "user@ex.com" --subject "Subject" --body "Body"
 ```
 
-Or with npm:
+### Calendar
 ```bash
-npm install -g gws
+gws calendar +agenda --today       # Today's agenda
+gws calendar +agenda --week        # This week
+gws calendar +agenda --days 3      # Next N days
+gws calendar +insert --summary "Meeting" --start "2026-03-07T10:00:00" --end "2026-03-07T11:00:00" --attendee "person@ex.com"
 ```
 
-### Dependencies
-- **DuckDB** - Required for Drive and Email indexing
-  ```bash
-  # macOS
-  brew install duckdb
-  # Linux
-  curl -LO https://github.com/duckdb/duckdb/releases/latest/download/duckdb_cli-linux-amd64.zip
-  unzip duckdb_cli-linux-amd64.zip && sudo mv duckdb /usr/local/bin/
-  ```
-- **Python 3** - Required for index sync scripts
+### Drive
+```bash
+# Search files
+gws drive files list --params '{"q":"name contains \"term\"","pageSize":20,"fields":"files(id,name,mimeType,size,parents)"}' --format json
 
-## Drive Index (DuckDB)
+# Download binary file
+gws drive files get --params '{"fileId":"FILE_ID","alt":"media"}' --output ./file.ext
 
-A local DuckDB index of all Google Drive files lives at a configurable path. This avoids API round trips for search/browse operations.
+# Export Google Doc/Sheet (CANNOT use alt:media - will 403)
+gws drive files export --params '{"fileId":"FILE_ID","mimeType":"application/pdf"}' --output file.pdf
 
-**Default location:** `${GWS_INDEX_DB:-~/.local/share/gws/inbox.duckdb}`
-**Override:** Set `GWS_INDEX_DB` env var to point to a different DuckDB file.
+# Upload
+gws drive +upload ./file.pdf --name "My Document"
+```
 
-Scripts that sync and query the index:
+**Drive gotchas:** Search is NOT recursive (use `"FOLDER_ID" in parents`). Shared files need `includeItemsFromAllDrives` + `supportsAllDrives`. Google Docs/Sheets/Slides require `export`, not `get`. Always include `fields` param. **Prefer the DuckDB index** for search/browse.
+
+### Sheets
+```bash
+gws sheets +read --spreadsheet "ID" --range "Sheet1!A1:D10"
+gws sheets +append --spreadsheet "ID" --values '[["col1","col2"],["val1","val2"]]'
+```
+
+### Docs
+```bash
+gws docs documents get --params '{"documentId":"DOC_ID"}'
+gws docs +write --document "DOC_ID" --text "New content"
+```
+
+### Tasks
+```bash
+gws tasks tasklists list
+gws tasks tasks list --params '{"tasklist":"TASKLIST_ID"}'
+```
+
+## Usage Guidelines
+
+1. **Reading emails**: `+triage` for overview, then `messages get` for specifics
+2. **Drive search**: Prefer DuckDB index; use API for downloads/uploads/mutations
+3. **Sending/creating**: Always confirm with user before sending emails or creating events
+4. Parse JSON/table output and present clearly. Use subagents for parallel email processing.
+
+## Common Flags
+
+| Flag | Purpose |
+|------|---------|
+| `--format json/table/csv/yaml` | Output format |
+| `--page-all` | Auto-paginate (NDJSON) |
+| `--page-limit N` | Max pages (default 10) |
+| `--dry-run` | Validate without sending |
+
+---
+
+## Reference
+
+### DuckDB Drive Index
+
+Local DuckDB index of all Google Drive files. Avoids API round trips for search/browse.
+
+**Location:** `${GWS_INDEX_DB:-~/.local/share/gws/inbox.duckdb}`
 
 ```bash
-# Sync Drive files into the DuckDB index
+# Sync and query
 ${CLAUDE_PLUGIN_ROOT}/scripts/sync-drive.sh
-
-# Query the index (search, videos, folders, recent, stats, tree, sql)
 ${CLAUDE_PLUGIN_ROOT}/scripts/query-drive.sh search "term"
 ${CLAUDE_PLUGIN_ROOT}/scripts/query-drive.sh videos
 ${CLAUDE_PLUGIN_ROOT}/scripts/query-drive.sh recent
@@ -54,177 +98,42 @@ ${CLAUDE_PLUGIN_ROOT}/scripts/query-drive.sh tree "folder name"
 ${CLAUDE_PLUGIN_ROOT}/scripts/query-drive.sh sql "SELECT ..."
 ```
 
-**From other projects:** The index scripts read `GWS_INDEX_DB` if set, falling back to the default path. The index is shared — sync once, query from anywhere.
-
-## Email Index (DuckDB)
-
-Emails can also be synced into the same DuckDB index for local search and categorization.
+### DuckDB Email Index
 
 ```bash
-# Sync inbox emails into DuckDB
-${CLAUDE_PLUGIN_ROOT}/scripts/sync-emails.sh
-
-# Auto-categorize emails (newsletter, notification, meeting, business, application)
-${CLAUDE_PLUGIN_ROOT}/scripts/categorize-emails.sh
-
-# Query emails (applications, unseen, stats, search, sql)
-${CLAUDE_PLUGIN_ROOT}/scripts/query.sh applications
+${CLAUDE_PLUGIN_ROOT}/scripts/sync-emails.sh          # Sync inbox emails
+${CLAUDE_PLUGIN_ROOT}/scripts/categorize-emails.sh     # Auto-categorize
+${CLAUDE_PLUGIN_ROOT}/scripts/query.sh applications    # Query by type
 ${CLAUDE_PLUGIN_ROOT}/scripts/query.sh unseen
 ${CLAUDE_PLUGIN_ROOT}/scripts/query.sh stats
 ${CLAUDE_PLUGIN_ROOT}/scripts/query.sh search "term"
 ${CLAUDE_PLUGIN_ROOT}/scripts/query.sh sql "SELECT ..."
-
-# Sync application emails to a Google Sheet
-${CLAUDE_PLUGIN_ROOT}/scripts/sync-to-sheets.sh <spreadsheet-id>
-```
-
-## Quick Reference
-
-### Gmail
-
-```bash
-# Triage unread inbox (default 20, adjust with --max)
-gws gmail +triage --max 10
-
-# Triage with search query
-gws gmail +triage --query "from:someone@example.com" --max 20
-
-# Read a specific email by message ID
-gws gmail users messages get --params '{"userId":"me","id":"MESSAGE_ID"}' --format json
-
-# List messages matching a query
-gws gmail users messages list --params '{"userId":"me","q":"is:unread category:primary","maxResults":10}'
-
-# Send an email
-gws gmail +send --to "recipient@example.com" --subject "Subject" --body "Body text"
-
-# Watch for new emails (streaming NDJSON)
-gws gmail +watch --project your-gcp-project --once
-```
-
-### Calendar
-
-```bash
-# Today's agenda
-gws calendar +agenda --today
-
-# This week's agenda
-gws calendar +agenda --week
-
-# Tomorrow's agenda
-gws calendar +agenda --tomorrow
-
-# Next N days
-gws calendar +agenda --days 3
-
-# Create an event
-gws calendar +insert --summary "Meeting" --start "2026-03-07T10:00:00" --end "2026-03-07T11:00:00" --attendee "person@example.com"
-```
-
-### Drive
-
-```bash
-# Search by name (partial match, case-insensitive)
-gws drive files list --params '{"q":"name contains \"term\"","pageSize":20,"fields":"files(id,name,mimeType,size,parents)"}' --format json
-
-# Include "Shared with me" and shared drives
-gws drive files list --params '{"q":"sharedWithMe=true and name contains \"term\"","includeItemsFromAllDrives":true,"supportsAllDrives":true,"pageSize":20,"fields":"files(id,name,mimeType,size,parents)"}' --format json
-
-# Filter by MIME type (e.g. videos, folders)
-gws drive files list --params '{"q":"mimeType contains \"video/\"","pageSize":50,"fields":"files(id,name,mimeType,size)"}' --format json
-
-# Navigate into a folder (by folder ID)
-gws drive files list --params '{"q":"\"FOLDER_ID\" in parents","pageSize":50,"fields":"files(id,name,mimeType,size)","includeItemsFromAllDrives":true,"supportsAllDrives":true}' --format json
-
-# Download binary file (pdf, mp4, xlsx, docx, pptx, etc.)
-gws drive files get --params '{"fileId":"FILE_ID","alt":"media"}' --output ./local-file.ext
-
-# Export Google Doc/Sheet/Slides (CANNOT use alt:media - will 403)
-gws drive files export --params '{"fileId":"FILE_ID","mimeType":"application/pdf"}' --output file.pdf
-gws drive files export --params '{"fileId":"FILE_ID","mimeType":"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}' --output file.xlsx
-
-# Upload a file
-gws drive +upload ./file.pdf --name "My Document"
-
-# Check API schema
-gws schema drive.files.list --resolve-refs
-```
-
-**Drive gotchas:**
-- Search is NOT recursive - navigate folder-by-folder with `"FOLDER_ID" in parents`
-- Shared files need `includeItemsFromAllDrives` + `supportsAllDrives` to appear
-- Google Docs/Sheets/Slides require `export`, not `get` with `alt:media`
-- Always include `fields` param - default response omits size/parents
-- Query syntax: `name contains "x"`, `"parentId" in parents`, `mimeType="x"`, combine with `and`/`or`
-- Large files (>100MB): run download in background or increase timeout
-- **Prefer the DuckDB index** for search/browse — only hit the API for downloads, uploads, and mutations
-
-### Sheets
-
-```bash
-# Read a spreadsheet range
-gws sheets +read --spreadsheet "SPREADSHEET_ID" --range "Sheet1!A1:D10"
-
-# Append rows
-gws sheets +append --spreadsheet "SPREADSHEET_ID" --values '[["col1","col2"],["val1","val2"]]'
-```
-
-### Docs
-
-```bash
-# Read a document
-gws docs documents get --params '{"documentId":"DOC_ID"}'
-
-# Append text to a document
-gws docs +write --document "DOC_ID" --text "New content here"
-```
-
-### Tasks
-
-```bash
-# List task lists
-gws tasks tasklists list
-
-# List tasks in a task list
-gws tasks tasks list --params '{"tasklist":"TASKLIST_ID"}'
+${CLAUDE_PLUGIN_ROOT}/scripts/sync-to-sheets.sh <spreadsheet-id>  # Sync to Sheet
 ```
 
 ### Workflow Helpers
 
 ```bash
-# Morning standup report (today's calendar + tasks)
-gws workflow +standup-report
-
-# Prep for next meeting
-gws workflow +meeting-prep
-
-# Convert email to task
+gws workflow +standup-report    # Today's calendar + tasks
+gws workflow +meeting-prep      # Prep for next meeting
 gws workflow +email-to-task --message-id "MSG_ID" --tasklist "TASKLIST_ID"
-
-# Weekly digest
 gws workflow +weekly-digest
 ```
 
-## Common Flags
+### Installation
 
-| Flag | Purpose |
-|------|---------|
-| `--format json` | JSON output (default) |
-| `--format table` | Table output |
-| `--format csv` | CSV output |
-| `--format yaml` | YAML output |
-| `--page-all` | Auto-paginate (NDJSON) |
-| `--page-limit N` | Max pages (default 10) |
-| `--dry-run` | Validate without sending |
+```bash
+pnpm add -g gws   # or: npm install -g gws
+```
 
-## Usage Instructions
+Dependencies: DuckDB (for indexing), Python 3 (for sync scripts).
 
-When the user asks about their Google Workspace data:
+### Shared Drive Search
 
-1. **Reading emails**: Use `gws gmail +triage` for overview, then `gws gmail users messages get` for specific emails
-2. **Searching emails**: Use `--query` flag with Gmail search syntax (same as Gmail web search)
-3. **Calendar**: Use `+agenda` helpers for quick views, raw API for complex queries
-4. **Drive**: Prefer the DuckDB index for searching files. Use API for downloads, uploads, and mutations.
-5. **Sending/creating**: Always confirm with user before sending emails or creating events
+```bash
+gws drive files list --params '{"q":"sharedWithMe=true and name contains \"term\"","includeItemsFromAllDrives":true,"supportsAllDrives":true,"pageSize":20,"fields":"files(id,name,mimeType,size,parents)"}' --format json
+```
 
-Parse the JSON/table output and present it clearly to the user. When processing multiple emails, use subagents to read them in parallel.
+### Drive Query Syntax
+
+`name contains "x"`, `"parentId" in parents`, `mimeType="x"` — combine with `and`/`or`. Check schema: `gws schema drive.files.list --resolve-refs`
